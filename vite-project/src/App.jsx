@@ -1,9 +1,22 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
+import axios from 'axios'
 import './App.css'
+import {url} from './secret'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [result, setResult] = useState('');
+
+  async function callAudit(e) {
+    e.preventDefault();
+    const code = document.getElementById("code").value;
+
+    let res = await axios.request(`${url}${code}`)
+
+    console.log(res);
+    setResult(res.data);
+  }
 
   return (
     <div className="App">
@@ -17,15 +30,18 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <form onSubmit={e => callAudit(e)}>
+          <input id="code" type="text" placeholder="Enter Solidity code here . . ." style={{height: "500px", width: "500px"}}></input>
+          <br/>
+          <button type='submit'>Start Audit</button>
+        </form>
+        
         <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
+          {result}
         </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+      <p>
+        
       </p>
     </div>
   )
