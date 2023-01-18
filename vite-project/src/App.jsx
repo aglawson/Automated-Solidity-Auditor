@@ -33,7 +33,11 @@ function App() {
 
       let res = await axios.request(`${url}compile?contract_code=${JSON.stringify(input)}`)
       console.log(res);
-      setResult(JSON.stringify(res.data.contracts.contractName))
+      if(res.data.errors) {
+        setResult(JSON.stringify(res.data.errors));
+      } else {
+        setResult(JSON.stringify(res.data));
+      }
     }
   }
 
